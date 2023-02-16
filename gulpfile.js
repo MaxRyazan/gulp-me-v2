@@ -4,11 +4,11 @@ const {src, dest} = require('gulp');
 const gulp = require('gulp');
 const autoprefixer = require('gulp-autoprefixer'); //выставляет webkit префиксы
 const cssBeautify = require('gulp-cssbeautify');
-const rename = require('gulp-rename'); //переименовывает файлы
 const sass = require('gulp-sass')(require('sass'));
 const cssnano = require('gulp-cssnano'); //собирает css в 1 файл
 const uglify = require('gulp-uglify'); //минимизирует js в min.js
 const imagemin = require('gulp-imagemin');
+const concat = require('gulp-concat');
 const del = require('del');
 const rigger = require("gulp-rigger");  //собирает js в 1 файл
 const browserSync = require('browser-sync').create();
@@ -52,21 +52,19 @@ function html(){
 function css(){
     return src(path.src.css, {base: srcPath + "assets/scss/"})
         .pipe(sass())
+        .pipe(cssBeautify())
+        .pipe(dest(path.build.css))
+        .pipe(concat('styles.min.css'))
         .pipe(autoprefixer({
             overrideBrowserslist: ['last 10 version'],
             grid: true
         }))
-        .pipe(cssBeautify())
         .pipe(dest(path.build.css))
         .pipe(cssnano({
             zIndex: false,
             discardComments: {
                 removeAll: true
             }
-        }))
-        .pipe(rename({
-            suffix: ".min",
-            extname: ".css"
         }))
         .pipe(dest(path.build.css))
         .pipe(browserSync.reload({stream: true}))
@@ -76,11 +74,9 @@ function js(){
     return src(path.src.js, {base: srcPath + "assets/js/"})
         .pipe(rigger())
         .pipe(dest(path.build.js))
+        .pipe(concat('javascript.min.js'))
+        .pipe(dest(path.build.js))
         .pipe(uglify())
-        .pipe(rename({
-            suffix: ".min",
-            extname: ".js"
-        }))
         .pipe(dest(path.build.js))
         .pipe(browserSync.reload({stream: true}))
 }
