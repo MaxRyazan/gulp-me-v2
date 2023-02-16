@@ -8,11 +8,8 @@ const rename = require('gulp-rename'); //переименовывает файл
 const sass = require('gulp-sass')(require('sass'));
 const cssnano = require('gulp-cssnano'); //собирает css в 1 файл
 const uglify = require('gulp-uglify'); //минимизирует js в min.js
-const plumber = require('gulp-plumber');  //нужен чтобы при ошибке работа файла не остановилась
-const panini = require('panini');
 const imagemin = require('gulp-imagemin');
 const del = require('del');
-const notify = require('gulp-notify');
 const rigger = require("gulp-rigger");  //собирает js в 1 файл
 const browserSync = require('browser-sync').create();
 
@@ -48,24 +45,17 @@ const path = {
 
 function html(){
     return src(path.src.html, {base: srcPath})
-        .pipe(plumber({
-            errorHandler: function(err){
-                notify.onError({
-                    title: "SCSS Error",
-                    message: `${err.message}`
-                })(err);
-                this.emit('end');
-            }
-        }))
         .pipe(dest(path.build.html))
         .pipe(browserSync.reload({stream: true}))
 }
 
 function css(){
     return src(path.src.css, {base: srcPath + "assets/scss/"})
-        .pipe(plumber())
         .pipe(sass())
-        .pipe(autoprefixer())
+        .pipe(autoprefixer({
+            overrideBrowserslist: ['last 10 version'],
+            grid: true
+        }))
         .pipe(cssBeautify())
         .pipe(dest(path.build.css))
         .pipe(cssnano({
@@ -84,7 +74,6 @@ function css(){
 
 function js(){
     return src(path.src.js, {base: srcPath + "assets/js/"})
-        .pipe(plumber())
         .pipe(rigger())
         .pipe(dest(path.build.js))
         .pipe(uglify())
@@ -144,14 +133,14 @@ function lifeServer(){
 const build = gulp.series(clean, gulp.parallel(html, css, js, images, fonts))
 const watch = gulp.parallel(build, watchFiles, lifeServer)
 
-exports.html = html;
-exports.css = css;
-exports.js = js;
-exports.images = images;
-exports.fonts = fonts;
-exports.clean = clean;
-
-exports.watch = watch;
-exports.build = build;
-exports.default = watch
+// exports.html = html;
+// exports.css = css;
+// exports.js = js;
+// exports.images = images;
+// exports.fonts = fonts;
+// exports.clean = clean;
+//
+// exports.watch = watch;
+// exports.build = build;
+exports.default = watch;
 
