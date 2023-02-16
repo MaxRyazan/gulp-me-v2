@@ -30,15 +30,15 @@ const path = {
         html:   srcPath+ "*.html",
         css:    srcPath + "assets/scss/*.scss",
         js:     srcPath + "assets/js/*.js",
-        images: srcPath + "assets/images/**/*.{jpeg, png, svg, gif, ico, webp, webmanifest, xml, json}",
-        fonts:  srcPath + "assets/fonts/**/*.{eot, woff, woff2, ttf, svg}",
+        images: srcPath + "assets/images/**/*.{jpeg,png,svg,gif,ico,webp,webmanifest,xml,json}",
+        fonts:  srcPath + "assets/fonts/**/*.{eot,woff,woff2,ttf,svg}",
     },
     watch: {
         html:   srcPath + "**/*.html",
         css:    srcPath + "assets/scss/**/*.scss",
         js:     srcPath + "assets/js/**/*.js",
-        images: srcPath + "assets/images/**/*.{jpeg, png, svg, gif, ico, webp, webmanifest, xml, json}",
-        fonts:  srcPath + "assets/fonts/**/*.{eot, woff, woff2, ttf, svg}",
+        images: srcPath + "assets/images/**/*.{jpeg,png,svg,gif,ico,webp,webmanifest,xml,json}",
+        fonts:  srcPath + "assets/fonts/**/*.{eot,woff,woff2,ttf,svg}",
     },
     clean: "./" + distPath
 }
